@@ -18,6 +18,8 @@ jobs:
       - name: Inject API Key
         run: |
           sed -i "s|SECRET_GROQ_KEY_PLACEHOLDER|${{ secrets.GROQ_API_KEY }}|g" index.html
+          # Check if the placeholder still exists (if it prints a line, it FAILED to replace)
+          grep "SECRET_GROQ_KEY_PLACEHOLDER" index.html || echo "Placeholder replaced successfully"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
