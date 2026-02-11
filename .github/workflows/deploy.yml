@@ -3,7 +3,10 @@ name: Inject Secret and Deploy
 on:
   push:
     branches:
-      - main  # Make sure this matches your branch name
+      - main  # Ensure this matches your actual branch name (usually main or master)
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -14,11 +17,12 @@ jobs:
 
       - name: Inject API Key
         run: |
-          # This finds the placeholder in your index.html and replaces it with the Secret
+          # Finds the placeholder and replaces it with your GitHub Secret
+          # If your file is not named index.html, change it here
           sed -i "s/SECRET_GROQ_KEY_PLACEHOLDER/${{ secrets.GROQ_API_KEY }}/g" index.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: . # The folder where your index.html is
-          branch: gh-pages # The branch where the "live" site will live
+          folder: .        # The folder containing your index.html
+          branch: gh-pages # The action will create/update this branch automatically
